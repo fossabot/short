@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<!-- Copyright (c) molikai-work (2024)
+  - molikai-work 的特定修改和新增部分
+  - 根据 MIT 许可证发布
+-->
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <title>Example 短网址 - 短链管理工具</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/manage.min.css" />
+    <script src="/js/jquery.min.js"></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+</head>
+<body>
+    <div class="container">
+        <h2><a href="/" style="text-decoration: none; color: inherit; font-size: inherit;">Example 短网址</a></h2>
+        <h1>短链管理工具</h1>
+        <form id="apiForm">
+            <div>
+                <select id="operation" required>
+                    <option value="" disabled selected>选择短链操作</option>
+                    <option value="verify">验证短链密码</option>
+                    <option value="update-url">更新短链的目标网址</option>
+                    <option value="update-slug">更新短链的 Slug</option>
+                    <option value="update-password">更新短链的密码</option>
+                    <option value="delete">删除短链</option>
+                </select>
+            </div>
+            <div>
+                <input type="text" placeholder="短链 Slug" id="slug" class="input-field">
+            </div>
+            <div>
+                <input type="password" placeholder="短链密码" id="password" class="input-field">
+            </div>
+            <div id="newUrlGroup" style="display: none;">
+                <input type="text" placeholder="新的目标网址" id="newUrl" class="input-field">
+            </div>
+            <div id="newSlugGroup" style="display: none;">
+                <input type="text" placeholder="新的 Slug" id="newSlug" class="input-field">
+            </div>
+            <div id="newPasswordGroup" style="display: none;">
+                <input type="password" placeholder="新的密码" id="newPassword" class="input-field">
+            </div>
+            <div class="cf-turnstile" data-sitekey=""></div>
+            <button type="submit" id="submit">更新短链</button>
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <script src="/js/manage.min.js"></script>
+    <script src="/js/web_console.min.js" async defer></script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+/css/* /asset/css/:splat 200
+/js/* /asset/js/:splat 200
+/image/* /asset/image/:splat 200
