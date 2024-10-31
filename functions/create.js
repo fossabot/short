@@ -46,7 +46,7 @@ export async function onRequest(context) {
 
     const originurl = new URL(request.url);
     const origin = `${originurl.protocol}//${originurl.hostname}`
-    const hostName = equest.headers.get("Host");
+    const hostName = request.headers.get("Host");
 
     const formattedDate = new Date().toISOString();
 
