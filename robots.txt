@@ -1,6 +1,7 @@
 User-agent: *
 Disallow: /*?*
-Disallow: /cdn-cgi
-Disallow: /asset
-Disallow: /css
-Disallow: /js
+Disallow: /cdn-cgi/
+Disallow: /asset/
+Disallow: /css/
+Disallow: /image/links/
+Disallow: /js/

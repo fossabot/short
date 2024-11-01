@@ -9,6 +9,9 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="base-uri 'self'; object-src 'none'; form-action 'self'">
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="robots" content="index, follow" />
     <title>Example 短网址</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/styles.min.css" />
@@ -20,40 +23,43 @@
     <div class="canister">
         <header>
             <h1>Example 短网址</h1>
-            <p>提供免费的短网址服务 😎</p>
+            <p>提供免费且安全的短网址服务 😎</p>
         </header>
 
         <div id="app">
             <p id="alert"></p> 
     
-            <input placeholder="在这里输入要缩短的网址..." alt="在这里必填短链的目标网址，在生成完成后这里也会被替换为生成的短链" id="url" />
+            <input placeholder="在这里输入要缩短的网址..." id="url" />
 
             <details>
-                <summary alt="点击展开可选自定义部分">可选自定义设置</summary>
+                <summary>可选自定义设置</summary>
                 <div>
-                    <input placeholder="Slug" alt="最终短链的 ID 部分" id="slug" autocomplete="off" />
+                    <input placeholder="Slug" id="slug" />
                     <small>默认随机生成的支持中文的短 ID。</small>
-                    <input type="password" placeholder="Password" alt="您为此短链设置的管理密码" id="password" />
+                    <input placeholder="Password" id="password" />
                     <small>在<a href="/pages/manage" target="_blank">管理工具</a>中更新短链信息的密码。</small>
-                    <input placeholder="Email" alt="凭这里填写的邮箱联系管理员，让管理员知道您是谁" id="email" />
+                    <input placeholder="Email" id="email" />
                     <small>用于联系管理员编辑短链的邮箱。</small>
                 </div>
             </details>
 
-            <div class="cf-turnstile" data-sitekey=""></div>
+            <div class="captcha-container">
+                <div class="cf-turnstile" data-sitekey=""></div>
+                <!--<p id="captcha-tip">请等待验证码加载完成</p>-->
+            </div>      
 
-            <button id="submit" alt="点击此按钮以生成短链">生成短链</button>
+            <button id="submit">生成短链</button>
         </div>
 
-        <footer>
-            <p class="links">
-                <a href="https://gitcode.top/" title="友情链接：分享代码的博客" rel="noopener noreferrer" target="_blank" style="white-space: nowrap;">分享代码的博客</a> ｜
-                <a href="https://furries.fun/" title="友情链接：小黄泊的小站" rel="noopener noreferrer" target="_blank" style="white-space: nowrap;">小黄泊的小站</a>
-            </p>
+        <noscript>
+            <p>注意：完整使用 Example 短链服务需要浏览器支持（启用）JavaScript！</p>
+        </noscript>
 
+        <footer>
             <div class="copyright">
-                <p>Copyright &copy; 2023-Present
-                    <a href="https://c1n.top/">Example</a>.<br />
+                <p>
+                    Copyright &copy; 2023-Present
+                    <a href="/">Example</a>.<br />
                     Powered by <a href="https://github.com/molikai-work/short" rel="external nofollow noopener noreferrer" target="_blank">Short</a>.
                 </p>
             </div>

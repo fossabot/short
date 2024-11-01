@@ -4,11 +4,10 @@
     "include": [
         "/*"
     ],
-
     "exclude": [
         "/pages/",
+        "/favicon.ico",
         "/LICENSE",
-        "/robots.txt",
-        "/sitemap.xml"
+        "/robots.txt"
     ]  
 }

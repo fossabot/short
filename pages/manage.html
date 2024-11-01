@@ -6,9 +6,12 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="base-uri 'self'; object-src 'none'; form-action 'self'">
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="robots" content="index, follow" />
     <title>Example 短网址 - 短链管理工具</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/manage.min.css" />
+    <link rel="stylesheet" href="/css/manage-styles.min.css" />
     <script src="/js/jquery.min.js"></script>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
@@ -24,30 +27,43 @@
                     <option value="update-url">更新短链的目标网址</option>
                     <option value="update-slug">更新短链的 Slug</option>
                     <option value="update-password">更新短链的密码</option>
+                    <option value="toggle-status">切换短链代理</option>
                     <option value="delete">删除短链</option>
                 </select>
             </div>
+
             <div>
                 <input type="text" placeholder="短链 Slug" id="slug" class="input-field">
             </div>
+
             <div>
                 <input type="password" placeholder="短链密码" id="password" class="input-field">
             </div>
+
             <div id="newUrlGroup" style="display: none;">
                 <input type="text" placeholder="新的目标网址" id="newUrl" class="input-field">
             </div>
+
             <div id="newSlugGroup" style="display: none;">
                 <input type="text" placeholder="新的 Slug" id="newSlug" class="input-field">
             </div>
+
+            <p id="proxyUrlTip" style="display: none;">温馨提醒：代理资源仅允许多媒体与文本，不支持网页等其他资源。</p>
+
             <div id="newPasswordGroup" style="display: none;">
                 <input type="password" placeholder="新的密码" id="newPassword" class="input-field">
             </div>
+
             <div class="cf-turnstile" data-sitekey=""></div>
-            <button type="submit" id="submit">更新短链</button>
+            <button type="submit" id="submit">验证更新短链</button>
         </form>
 
+        <noscript>
+            <p>注意：完整使用 Example 短链管理工具需要浏览器支持（启用）JavaScript！</p>
+        </noscript>
+
         <div id="result"></div>
-    </div>
+    </div>    
 
     <script src="/js/manage.min.js"></script>
     <script src="/js/web_console.min.js" async defer></script>
