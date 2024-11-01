@@ -163,7 +163,7 @@ CREATE UNIQUE INDEX banDomain_index ON banDomain(domain);
 
 如果你需要开启 Turnstile 验证功能，请：
 1. 在 [Turnstile 页面](https://dash.cloudflare.com/?to=/:account/turnstile)根据引导步骤申请获得站点密钥和密钥，然后配置环境变量 `TURNSTILE_SECRET_KEY` 的值为密钥内容。
-2. 在项目根目录的 `index.html` 文件，将第 `47` 行的元素的 `data-sitekey` 属性设置为你的站点密钥。另外可以还取消下一行的注释以更好的提醒的验证码存在。
+2. 在项目根目录的 `index.html` 文件，将第 `47` 行的元素的 `data-sitekey` 属性设置为你的站点密钥。另外可以还取消下一行的注释以更好的提醒验证码的存在。
 2. 在项目 `pages` 目录下的 `manage.html` 文件，将第 `57` 行的元素的 `data-sitekey` 属性为设置你的站点密钥。
 
 完成。
