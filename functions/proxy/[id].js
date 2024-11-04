@@ -6,7 +6,7 @@
 
 // functions/proxy/[id].js
 
-import { allowOrigin, shortName, specialDomains, adminEmail } from '../utils';
+import { allowOrigin, createResponse, shortName, specialDomains, adminEmail } from '../utils';
 
 // 处理 GET 请求的函数
 export async function onRequestGet(context) {
