@@ -1,38 +1,19 @@
-# 注意
+## 二次修改
+> 本仓库分叉于 [x-dr/short](https://github.com/x-dr/short) 并且已经在源代码的基础上做了修改。
 
-> 本仓库分叉于 [https://github.com/x-dr/short](https://github.com/x-dr/short) 并且已经在源代码的基础上做了修改。
-
-> 源代码使用 MIT 许可证进行授权，本经过二次修改的程序同源代码的许可证，二次分发或者修改时请保留原作者和修改作者的版权信息。
-
----
-
-最新版本在 2024/11/04 的 v1.4.1。
+> 源代码使用 MIT 许可证进行授权，本经过二次修改的代码同源代码的许可证，二次分发或者修改时请保留原作者和修改作者的版权信息。
 
 ---
 
-**注意：v1.4.0 之前的版本与此版本不兼容。**
-
-1. 在数据表中多了一个字段 `password`，如要覆盖升级，请手动在 `links` 数据表中添加新字段 `password`，类型为 `TEXT`，
-你可以在控制台执行这段代码来使得旧版本更新后，数据库兼容新版本：
-```sql
-ALTER TABLE links
-ADD COLUMN password TEXT;
-```
-
-2. 数据表 `banUrl`，已改名为 `banDomain`，同时该数据表原 `url` 字段已改名为 `domain`，
-你可以在控制台执行这段代码来使得旧版本更新后，数据库兼容新版本：
-```sql
-ALTER TABLE banUrl RENAME TO banDomain;
-ALTER TABLE banDomain RENAME COLUMN url TO domain;
-```
+最新版本在 2024/11/07 的 v1.4.2。
 
 ## 介绍
-
 一个使用 Cloudflare Pages 创建的 URL 缩短器。
 
-支持设置密码和管理短链、使用 Turnstile 人机验证、黑名单域名管理、跳转页面配置、多域名使用，可通过环境变量快速配置。
+由此项目帮助您快速而免费的建立短网址服务，<br />
+支持设置密码和管理短链、使用 Turnstile 人机验证、黑名单域名管理、跳转页面配置、代理资源响应、多域名使用，可通过环境变量快速配置。
 
-可靠的短链示例：[https://c1n.top/](https://c1n.top/)
+可靠的短链示例：[c1n.top](https://c1n.top/)
 
 <details>
   <summary>点击这里查看演示图片</summary>
@@ -46,9 +27,8 @@ ALTER TABLE banDomain RENAME COLUMN url TO domain;
   <img src="/docs/image/A3.png">
 </details>
 
-### 利用 Cloudflare Pages 部署
-
-1. Fork 分叉本项目 : [https://github.com/molikai-work/short](https://github.com/molikai-work/short)。
+## 部署
+1. Fork 分叉本项目 : [molikai-work/short](https://github.com/molikai-work/short)。
 
 2. 登录到[Cloudflare](https://dash.cloudflare.com/)控制台。
 
@@ -69,7 +49,7 @@ ALTER TABLE banDomain RENAME COLUMN url TO domain;
 
   <img src="/docs/image/B6-2-2.png">
 
-  (3) 填写 `数据库名称` 输入框，名称随意，确保绑定是为同一个数据库即可，下方的位置选项可不选（这里已经填好，示范）：
+  (3) 填写 `数据库名称` 输入框，名称随意，只要确保绑定是为同一个数据库即可，下方的位置选项可不选（这里已经填好，示范）：
   <img src="/docs/image/B6-3.png">
 
   (4) 完成数据库创建，接下来在数据库的操作页面，请点击 `控制台`，并查看主部署教程的下一步（第7步）：
@@ -83,34 +63,34 @@ ALTER TABLE banDomain RENAME COLUMN url TO domain;
 ```sql
 DROP TABLE IF EXISTS links;
 CREATE TABLE IF NOT EXISTS links (
-    `id` integer PRIMARY KEY NOT NULL,
-    `url` text,
-    `slug` text,
-    `password` text,
-    `email` text,
-    `ua` text,
-    `ip` text,
-    `status` text,
-    `hostname` text ,
-    `create_time` DATE
+  `id` integer PRIMARY KEY NOT NULL,
+  `url` text,
+  `slug` text,
+  `password` text,
+  `email` text,
+  `ua` text,
+  `ip` text,
+  `status` text,
+  `hostname` text ,
+  `create_time` DATE
 );
 DROP TABLE IF EXISTS logs;
 CREATE TABLE IF NOT EXISTS logs (
-    `id` integer PRIMARY KEY NOT NULL,
-    `url` text ,
-    `slug` text,
-    `referer` text,
-    `ua` text ,
-    `ip` text ,
-    `status` text,
-    `hostname` text ,
-    `create_time` DATE
+  `id` integer PRIMARY KEY NOT NULL,
+  `url` text ,
+  `slug` text,
+  `referer` text,
+  `ua` text ,
+  `ip` text ,
+  `status` text,
+  `hostname` text ,
+  `create_time` DATE
 );
 DROP TABLE IF EXISTS banDomain;
 CREATE TABLE IF NOT EXISTS banDomain (
-    `id` INTEGER PRIMARY KEY NOT NULL,
-    `domain` TEXT,
-    `create_time` TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))
+  `id` INTEGER PRIMARY KEY NOT NULL,
+  `domain` TEXT,
+  `create_time` TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))
 );
 
 CREATE UNIQUE INDEX links_index ON links(slug);
@@ -135,6 +115,7 @@ CREATE UNIQUE INDEX banDomain_index ON banDomain(domain);
 
 9. 重新部署项目以刷新数据，完成。
 
+## 自定义
 ### 配置数据表
 你可以向 Cloudflare 的 D1 数据库的已创建短链数据库中的 `banDomain` 数据表添加数据以设置黑名单域名。
 
@@ -142,33 +123,9 @@ CREATE UNIQUE INDEX banDomain_index ON banDomain(domain);
 
 请直接在 `banDomain` 数据表的 `domain` 项添加要加黑名单的一级域名，如 `example.com` ，其他的数据项会自动填写。
 
-这里推荐另一个项目 [https://github.com/JacobLinCool/d1-manager](https://github.com/JacobLinCool/d1-manager)，可视化 Cloudflare 的 D1 数据库的操作，更方便的设置和备份数据表。
+这里推荐另一个项目 [JacobLinCool/d1-manager](https://github.com/JacobLinCool/d1-manager)，可视化 Cloudflare 的 D1 数据库的操作，更方便的设置和备份数据表。
 
-### 配置环境变量与信息
-你可以在 Cloudflare Pages 项目控制面板 `设置` -> `环境变量` -> `制作` -> `为生产环境定义变量` 中配置以下环境变量。
-
-所有环境变量全部都是可选配置的，不配置则执行默认的相关函数，不影响正常使用。
-
-| 变量名称 | 示例值 | 可选 | 介绍 |
-|---------|-------|------|-----|
-| SHORT_DOMAINS        | example.com                | 是的 | 短链生成后的显示域名，没有变量则默认自动获取当前域名 |
-| DIRECT_DOMAINS       | example.com                | 是的 | 直链域名，设置后使用该域名访问则直接 302 重定向跳转，而不是默认的 JS 跳转，多个用逗号分割，没有变量则默认不启用直链跳转 |
-| ALLOW_DOMAINS        | example.com,example.org    | 是的 | 允许解析目标地址的域名白名单，设置后只能使用该域名解析目标地址，否则拒绝请求，多个用逗号分割，没有变量则默认不启用允许解析域名白名单 |
-| TURNSTILE_SECRET_KEY | 0x2Ba5_qET35AIiYUO-ZGHtaHc | 是的 | Turnstile 的密钥，没有变量则默认不启用 Turnstile 验证 |
-
-你可以在项目 `functions` 文件夹下找到 `utils.js` 文件，可以在这里浏览通用函数和部分设置信息，例如在后端的短链的显示名称。
-
-### 配置 Turnstile 验证
-如果未在环境变量中配置关于 Turnstile 密钥的环境变量，请忽略本节信息。
-
-如果你需要开启 Turnstile 验证功能，请：
-1. 在 [Turnstile 页面](https://dash.cloudflare.com/?to=/:account/turnstile)根据引导步骤申请获得站点密钥和密钥，然后配置环境变量 `TURNSTILE_SECRET_KEY` 的值为密钥内容。
-2. 在项目根目录的 `index.html` 文件，将第 `47` 行的元素的 `data-sitekey` 属性设置为你的站点密钥。另外可以还取消下一行的注释以更好的提醒验证码的存在。
-2. 在项目 `pages` 目录下的 `manage.html` 文件，将第 `57` 行的元素的 `data-sitekey` 属性为设置你的站点密钥。
-
-完成。
-
-### 数据表解释
+#### 数据表解释
 > 表 `links` 短链记录
 
 - id  = 行数据在数据表中的唯一记录 ID
@@ -200,15 +157,48 @@ CREATE UNIQUE INDEX banDomain_index ON banDomain(domain);
 - domain = 黑名单域名
 - create_time = 黑名单添加时间
 
-### 通过 API 生成
+### 配置环境变量与信息
+你可以在 Cloudflare Pages 项目控制面板 `设置` -> `环境变量` -> `制作` -> `为生产环境定义变量` 中配置以下环境变量。
+
+所有环境变量全部都是可选配置的，不配置则执行默认的相关函数，不影响正常使用。
+
+| 变量名称 | 示例值 | 可选 | 介绍 |
+|---------|-------|------|-----|
+| SHORT_DOMAINS        | example.com                | 是的 | 短链生成后的显示域名，没有变量则默认自动获取当前域名 |
+| DIRECT_DOMAINS       | example.com                | 是的 | 直链域名，设置后使用该域名访问则直接 302 重定向跳转，而不是默认的 JS 跳转，多个用逗号分割，没有变量则默认不启用直链跳转 |
+| ALLOW_DOMAINS        | example.com,example.org    | 是的 | 允许解析目标地址的域名白名单，设置后只能使用该域名解析目标地址，否则拒绝请求，多个用逗号分割，没有变量则默认不启用允许解析域名白名单 |
+| TURNSTILE_SECRET_KEY | 0x2Ba5_qET35AIiYUO-ZGHtaHc | 是的 | Turnstile 的密钥，没有变量则默认不启用 Turnstile 验证 |
+
+你可以在项目 `functions` 文件夹下找到 `utils.js` 文件，可以在这里浏览通用函数和部分设置信息，例如在后端的短链的显示名称。
+
+### 配置 Turnstile 验证
+如果未在环境变量中配置关于 Turnstile 密钥的环境变量，请忽略本节信息。
+
+如果你需要开启 Turnstile 验证功能，请：
+1. 在 [Turnstile 页面](https://dash.cloudflare.com/?to=/:account/turnstile)根据引导步骤申请获得站点密钥和密钥，然后配置环境变量 `TURNSTILE_SECRET_KEY` 的值为密钥内容。
+2. 在项目根目录的 `index.html` 文件，将第 `47` 行的元素的 `data-sitekey` 属性设置为你的站点密钥。另外可以还取消下一行的注释以更好的提醒验证码的存在。
+2. 在项目 `pages` 目录下的 `manage.html` 文件，将第 `57` 行的元素的 `data-sitekey` 属性为设置你的站点密钥。
+
+### 配置项目部署设置
+
+- 项目根目录文件 `_headers`<br />
+请求响应头设置，参见 Cloudflare Pages 文档：[标头](https://developers.cloudflare.com/pages/configuration/headers/)
+
+- 项目根目录文件 `_redirects`<br />
+重定向设置，参加 Cloudflare Pages 文档：[重定向](https://developers.cloudflare.com/pages/configuration/redirects/)
+
+- 项目根目录文件 `_routes.json`<br />
+路由设置，参加 Cloudflare Pages 文档：[路由](https://developers.cloudflare.com/pages/functions/routing/)
+
+## API
 仅限未启用 Turnstile 验证的情况下可以任意使用 API 生成。
 
 ```bash
 # POST 请求到 /create
-curl -X POST -H "Content-Type: application/json" -d '{"url":"https://example.com/"}' https://example.com/create
+curl -X POST -H "Content-Type: application/json" -d '{"url":"https://example.org/http"}' https://example.com/create
 
 # 指定 slug，还支持 email、password
-curl -X POST -H "Content-Type: application/json" -d '{"url":"https://example.com/","slug":"example"}' https://example.com/create
+curl -X POST -H "Content-Type: application/json" -d '{"url":"https://example.org/http","slug":"example"}' https://example.com/create
 
 ```
 
@@ -216,16 +206,14 @@ curl -X POST -H "Content-Type: application/json" -d '{"url":"https://example.com
 
 ```json
 {
-    "code": 200,
-    "message": "success",
-    "time": 1717431484672,
-    "url": "https://example.com/",
-    "slug": "example",
-    "link": "https://example.com/example"
+    "code": 200, // 响应状态码
+    "message": "success", // 响应信息
+    "time": 1717431484672, // 当前时间戳
+    "url": "https://example.org/http", // 原始 URL
+    "slug": "example", // 短链 Slug
+    "link": "https://example.com/example" // 短链完整 URL
 }
 ```
-
----
 
 ## 贡献
 问题反馈或建议请提交 `issues`，也非常欢迎来提交 `pulls`，感谢！

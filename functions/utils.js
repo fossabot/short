@@ -9,8 +9,11 @@
 // 短网址名称
 export const shortName = `Example 短网址`;
 
-// 跨域请求允许域
+// 正常 Api 跨域请求允许域
 export const allowOrigin = "*"
+
+// 代理 Api 跨域请求允许域
+export const allowProxyOrigin = "*"
 
 // 随机 slug 位数 (包括固定前缀)
 export const initialLength = 6;
@@ -31,12 +34,11 @@ export const adminEmail = `info@example.com`;
 
 // 跳转页 Head 块
 export const htmlHead = `<!-- Head -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-shortAnalytics' 'nonce-shortJump' 'nonce-shortConsole' https://challenges.cloudflare.com https://static.cloudflareinsights.com https://www.googletagmanager.com https://www.google-analytics.com; connect-src 'self' https://challenges.cloudflare.com https://static.cloudflareinsights.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta charset="UTF-8" />
 <link rel="icon" href="/favicon.ico" />
 <meta name="robots" content="noindex, nofollow" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" rel="preload" href="/css/jump-styles.min.css" as="style" />`;
+<link rel="stylesheet" rel="preload" href="/css/jump-styles.css" as="style" />`;
 
 // 跳转页 No Script 提示
 export const noscript = `<!-- Noscript -->
@@ -47,8 +49,7 @@ export const noscript = `<!-- Noscript -->
 
 // 跳转页 Footer 块
 export const footer = `<!-- Footer -->
-<hr />
-<script nonce="shortConsole" src="/js/web_console.min.js" async defer></script>`;
+<hr />`;
 
 // 生成随机字符串 slug
 export function generatePrefixedRandomSlug(length) {

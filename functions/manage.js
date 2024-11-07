@@ -4,7 +4,7 @@
  * 根据 MIT 许可证发布
  */
 
-// functions/ip.js
+// functions/manage.js
 
 import { allowOrigin, createResponse, shortName, hashPassword, specialDomains } from './utils';
 

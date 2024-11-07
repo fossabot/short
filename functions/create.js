@@ -77,11 +77,12 @@ export async function onRequest(context) {
     }
 
     // 3. URL 的顶级域名必须允许 ------------------------------
-    const levelDomain = new URL(url).hostname.split('.').pop();
+    // 这里似乎没有必要限制顶级域名的使用, 如有需要请取消注释或和修改代码
+    /*const levelDomain = new URL(url).hostname.split('.').pop();
     // 检查顶级域名是否允许
     if (levelDomain === 'gov' || levelDomain === 'edu') {
         return createResponse(403, '包含禁止缩短的顶级域名', 403);
-    }
+    }*/
 
     // 4. 自定义的 slug 必须符合要求 ------------------------------
     if (slug && (slug.length < 4 || slug.length > 16 || !/^(?!\.)[a-zA-Z0-9\u4e00-\u9fa5\u3400-\u4dbf]+(\.(?![a-zA-Z])[a-zA-Z0-9\u4e00-\u9fa5\u3400-\u4dbf]+)*$/.test(slug))) {
@@ -261,8 +262,8 @@ export async function onRequest(context) {
             slug: generatedSlug,
             link: `${customOrigin}/${generatedSlug}`
         });
-    } catch (e) {
+    } catch (error) {
         // 错误处理
-        return createResponse(500, e.message, 500);
+        return createResponse(500, error.message, 500);
     }
 }

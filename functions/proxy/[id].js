@@ -6,7 +6,7 @@
 
 // functions/proxy/[id].js
 
-import { allowOrigin, createResponse, shortName, specialDomains, adminEmail } from '../utils';
+import { allowProxyOrigin, createResponse, shortName, specialDomains, adminEmail } from '../utils';
 
 // 处理 GET 请求的函数
 export async function onRequestGet(context) {
@@ -16,7 +16,7 @@ export async function onRequestGet(context) {
     if (request.method === 'OPTIONS') {
         return new Response(null, {
             headers: {
-                'Access-Control-Allow-Origin': `${allowOrigin}`,
+                'Access-Control-Allow-Origin': `${allowProxyOrigin}`,
                 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
                 'Access-Control-Allow-Headers': 'Content-Type',
                 'Access-Control-Max-Age': '86400',
@@ -225,9 +225,8 @@ export async function onRequestGet(context) {
                 });
             }
         } catch (error) {
-            return new Response(error.message, {
-                status: 500
-            });
+            // 错误处理
+            return createResponse(500, error.message, 500);
         }
     }
 }
