@@ -185,10 +185,10 @@ CREATE UNIQUE INDEX banDomain_index ON banDomain(domain);
 请求响应头设置，参见 Cloudflare Pages 文档：[标头](https://developers.cloudflare.com/pages/configuration/headers/)
 
 - 项目根目录文件 `_redirects`<br />
-重定向设置，参加 Cloudflare Pages 文档：[重定向](https://developers.cloudflare.com/pages/configuration/redirects/)
+重定向设置，参见 Cloudflare Pages 文档：[重定向](https://developers.cloudflare.com/pages/configuration/redirects/)
 
 - 项目根目录文件 `_routes.json`<br />
-路由设置，参加 Cloudflare Pages 文档：[路由](https://developers.cloudflare.com/pages/functions/routing/)
+路由设置，参见 Cloudflare Pages 文档：[路由](https://developers.cloudflare.com/pages/functions/routing/)
 
 ## API
 仅限未启用 Turnstile 验证的情况下可以任意使用 API 生成。
