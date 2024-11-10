@@ -299,6 +299,10 @@ footer p {
         background: var(--body-bg)
     }
 
+    .canister a {
+    	color: #2563eb
+    }
+
     a {
         color: #2563eb
     }
