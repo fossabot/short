@@ -56,7 +56,7 @@ export function generatePrefixedRandomSlug(length) {
     const characters = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     let result = '';
 
-    // 将随机的首字符固定为 - 以区分随机和自定义
+    // 将随机的首字符固定为 - 来区分随机和自定义
     result += "-";
 
     for (let i = 1; i < length; i++) {
@@ -68,7 +68,7 @@ export function generatePrefixedRandomSlug(length) {
 }
 
 // 统一返回函数
-export function createResponse(code, message, status, extraData = {}) {
+export function createResponse(code, message, extraData = {}) {
     return Response.json({
         code: code,
         message: message,
@@ -76,7 +76,7 @@ export function createResponse(code, message, status, extraData = {}) {
         ...extraData
     }, {
         headers: corsHeaders,
-        status: status
+        status: code
     });
 }
 
@@ -85,12 +85,6 @@ export const corsHeaders = {
     'Access-Control-Allow-Origin': `${allowOrigin}`,
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Max-Age': '86400'
-};
-
-// 用于 HTML 的 CORS 相关的响应头部信息
-export const htmlCorsHeaders = {
-    ...corsHeaders,
-    "Content-Type": "text/html;charset=UTF-8"
 };
 
 // 哈希密码函数

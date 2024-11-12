@@ -31,12 +31,12 @@ export async function onRequestGet(context) {
 
     // 如果没有数据库变量
     if (!env.DB) {
-        return createResponse(500, `${shortName}跳转处理 API 运行正常，但尚未配置数据库。`, 500);
+        return createResponse(500, `${shortName}跳转处理 API 运行正常，但尚未配置数据库。`);
     }
 
     //  如果不是 GET 请求
     if (request.method !== 'GET' && request.method !== 'HEAD') {
-        return createResponse(405, `${shortName}跳转处理 API 运行正常，请使用 GET 方法。`, 405);
+        return createResponse(405, `${shortName}跳转处理 API 运行正常，请使用 GET 方法。`);
     }
 
     if (!env.ALLOW_DOMAINS) {

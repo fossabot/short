@@ -5,7 +5,7 @@
 
 ---
 
-The latest version is v1.4.2 as of 2024/11/07.
+The latest version is v1.4.3 as of 2024/11/12.
 
 ## Introduction
 A URL shortener built using Cloudflare Pages.

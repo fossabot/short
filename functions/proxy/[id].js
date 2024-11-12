@@ -41,12 +41,12 @@ export async function onRequestGet(context) {
 
     // 如果没有数据库变量
     if (!env.DB) {
-        return createResponse(500, `${shortName}代理资源跳转 API 运行正常，但尚未配置数据库。`, 500);
+        return createResponse(500, `${shortName}代理资源跳转 API 运行正常，但尚未配置数据库。`);
     }
 
     // 如果是 HEAD 请求
     if (request.method === 'HEAD') {
-        return createResponse(405, `此代理资源跳转 API 已禁止使用 HEAD 请求。`, 405);
+        return createResponse(405, `此代理资源跳转 API 已禁止使用 HEAD 请求。`);
     }
 
     // 如果请求的主机名不是原 API 的主机名
@@ -226,7 +226,7 @@ export async function onRequestGet(context) {
             }
         } catch (error) {
             // 错误处理
-            return createResponse(500, error.message, 500);
+            return createResponse(500, error.message);
         }
     }
 }

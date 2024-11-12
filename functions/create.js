@@ -6,9 +6,7 @@
 
 // functions/create.js
 
-import { allowOrigin, createResponse, htmlCorsHeaders, shortName, initialLength, hashPassword, specialDomains, generatePrefixedRandomSlug } from './utils';
-
-import html403 from '../403.html'; // 导入 403 页面
+import { allowOrigin, createResponse, shortName, initialLength, hashPassword, specialDomains, generatePrefixedRandomSlug } from './utils';
 
 // 处理创建短链接的请求
 export async function onRequest(context) {
@@ -45,20 +43,18 @@ export async function onRequest(context) {
         // 环境变量不存时跳过代码执行
     } else if (hostName !== `${env.SHORT_DOMAINS}`) {
         // 返回 403 响应
-        return new Response(html403, {
-            headers: htmlCorsHeaders,
-            status: 403
-        });
+        return createResponse(403, `请求来源主机名不合法`);
+
     }
 
     // 如果没有数据库变量
     if (!env.DB) {
-        return createResponse(500, `${shortName} API 运行正常，但尚未配置数据库。`, 500);
+        return createResponse(500, `${shortName} API 运行正常，但尚未配置数据库。`);
     }
 
     // 如果不是 POST 请求
     if (request.method !== 'POST' && request.method !== 'HEAD') {
-        return createResponse(405, `${shortName} API 运行正常，请使用 POST 方法创建短链。`, 405);
+        return createResponse(405, `${shortName} API 运行正常，请使用 POST 方法创建短链。`);
     }
 
     // 从 JSON 数据中解构出进入参数
@@ -67,13 +63,13 @@ export async function onRequest(context) {
     // 开始进入参数检查
     // 1. 必须有 URL 参数 ------------------------------
     if (!url) {
-        return createResponse(422, '请填写你要缩短的 URL', 422);
+        return createResponse(422, '请填写你要缩短的 URL');
     }
 
     // 2. URL 必须符合要求 ------------------------------
     // url 格式检查
     if (!/^(https?):\/\/.{3,}/.test(url)) {
-        return createResponse(422, 'URL 格式不合规范', 422);
+        return createResponse(422, 'URL 格式不合规范');
     }
 
     // 3. URL 的顶级域名必须允许 ------------------------------
@@ -81,28 +77,28 @@ export async function onRequest(context) {
     /*const levelDomain = new URL(url).hostname.split('.').pop();
     // 检查顶级域名是否允许
     if (levelDomain === 'gov' || levelDomain === 'edu') {
-        return createResponse(403, '包含禁止缩短的顶级域名', 403);
+        return createResponse(403, '包含禁止缩短的顶级域名');
     }*/
 
     // 4. 自定义的 slug 必须符合要求 ------------------------------
     if (slug && (slug.length < 4 || slug.length > 16 || !/^(?!\.)[a-zA-Z0-9\u4e00-\u9fa5\u3400-\u4dbf]+(\.(?![a-zA-Z])[a-zA-Z0-9\u4e00-\u9fa5\u3400-\u4dbf]+)*$/.test(slug))) {
-        return createResponse(422, 'Slug 4-16位且不能以点开头或结束、含有部分特殊字符和扩展名', 422);
+        return createResponse(422, 'Slug 4-16位且不能以点开头或结束、含有部分特殊字符和扩展名');
     }
 
     // 5. 如果有 Password 那么必须符合要求 ------------------------------
     if (password && !/^[a-zA-Z0-9~!@#$%^&\*()\[\]{}\-+_=\."'?\/]{6,32}$/.test(password)) {
-        return createResponse(422, '密码6-32位且不支持部分特殊字符', 422);
+        return createResponse(422, '密码6-32位且不支持部分特殊字符');
     }
 
     // 6. 如果有 Email 那么必须符合要求 ------------------------------
     // Email 格式检查
     if (email && !/^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/.test(email)) {
-        return createResponse(422, 'Email 格式不合规范', 422);
+        return createResponse(422, 'Email 格式不合规范');
     }
 
     // 7. 必须通过人机验证 ------------------------------
     if (!turnstileToken && env.TURNSTILE_SECRET_KEY) {
-        return createResponse(403, '需要完成验证码才能创建短链', 403);
+        return createResponse(403, '需要完成验证码才能创建短链');
     }
 
     if (!env.TURNSTILE_SECRET_KEY) {
@@ -123,7 +119,7 @@ export async function onRequest(context) {
         const turnstileResult = await turnstileResponse.json();
 
         if (!turnstileResult.success) {
-            return createResponse(403, '验证码验证失败，请刷新重试', 403);
+            return createResponse(403, '验证码验证失败，请刷新重试');
         }
     }
 
@@ -164,7 +160,7 @@ export async function onRequest(context) {
 
     // 如果存在 banDomain 记录，则返回 403
     if (banUrlQueryResult) {
-        return createResponse(403, '此链接域名在禁止缩短名单中', 403);
+        return createResponse(403, '此链接域名在禁止缩短名单中');
     }
     // 进入参数检查结束
 
@@ -200,13 +196,13 @@ export async function onRequest(context) {
         if (!env.ALLOW_DOMAINS) {
             // 检查是否指向相同当前域名
             if (bodyUrl.hostname === hostName) {
-                return createResponse(403, '您不能缩短指向本域的链接', 403);
+                return createResponse(403, '您不能缩短指向本域的链接');
             }
         } else {
             const allowDomains = env.ALLOW_DOMAINS.split(',');
             // 检查是否指向相同域名(允许解析的域名)
             if (allowDomains.includes(bodyUrl.hostname)) {
-                return createResponse(403, '您不能缩短指向本域的链接', 403);
+                return createResponse(403, '您不能缩短指向本域的链接');
             }
         }
 
@@ -216,9 +212,9 @@ export async function onRequest(context) {
             existingUrlQuery = await env.DB.prepare(`SELECT url FROM links WHERE slug = ?`).bind(slug).first();
             if (existingUrlQuery) {
                 if (existingUrlQuery.url === url) {
-                    return createResponse(409, '该链接及 Slug 已存在', 409);
+                    return createResponse(409, '该链接及 Slug 已存在');
                 }
-                return createResponse(409, '自定义 Slug 已被使用，请换一个', 409);
+                return createResponse(409, '自定义 Slug 已被使用，请换一个');
             }
         }
 
@@ -226,7 +222,7 @@ export async function onRequest(context) {
         const existingSlugQuery = await env.DB.prepare(`SELECT slug FROM links WHERE url = ?`).bind(url).first();
         if (existingSlugQuery && !slug && !email) {
             // 返回已生成的短链
-            return createResponse(200, 'success', 200, {
+            return createResponse(200, 'success', {
                 url: url,
                 slug: existingSlugQuery.slug,
                 link: `${customOrigin}/${existingSlugQuery.slug}`
@@ -257,13 +253,13 @@ export async function onRequest(context) {
             ).run();
 
         // 返回短链信息
-        return createResponse(200, 'success', 200, {
+        return createResponse(200, 'success', {
             url: url,
             slug: generatedSlug,
             link: `${customOrigin}/${generatedSlug}`
         });
     } catch (error) {
         // 错误处理
-        return createResponse(500, error.message, 500);
+        return createResponse(500, error.message);
     }
 }
