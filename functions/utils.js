@@ -73,6 +73,7 @@ export function createResponse(code, message, extraData = {}) {
         code: code,
         message: message,
         time: Date.now(),
+        releases: 'v1.4.4-final',
         ...extraData
     }, {
         headers: corsHeaders,

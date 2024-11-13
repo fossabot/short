@@ -10,7 +10,7 @@ import { createResponse, shortName, htmlHead, adminEmail, noscript, specialDomai
 
 import html404 from '../404.html'; // 导入 404 页面
 
-// 处理 GET 请求的函数
+// 处理正常短链查询的函数
 export async function onRequestGet(context) {
     const { request, env, params } = context;
 
@@ -20,11 +20,11 @@ export async function onRequestGet(context) {
     const userAgent = request.headers.get("User-Agent");
     const referer = request.headers.get('Referer');
 
-    const originurl = new URL(request.url);
-    const origin = `${originurl.protocol}//${originurl.hostname}` // 获取 "请求协议//请求主机名"
+    const originUrl = new URL(request.url);
+    const origin = `${originUrl.protocol}//${originUrl.hostname}` // 获取 "请求协议//请求主机名"
     const hostName = request.headers.get("Host");
 
-    let customOrigin = env.SHORT_DOMAINS ? `https://${env.SHORT_DOMAINS}` : origin;
+    const customOrigin = env.SHORT_DOMAINS ? `https://${env.SHORT_DOMAINS}` : origin;
 
     // 当前时间戳
     const formattedDate = new Date().toISOString();

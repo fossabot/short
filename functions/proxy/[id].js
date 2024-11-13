@@ -8,7 +8,7 @@
 
 import { allowProxyOrigin, createResponse, shortName, specialDomains, adminEmail } from '../utils';
 
-// 处理 GET 请求的函数
+// 处理代理资源短链查询的函数
 export async function onRequestGet(context) {
     const { request, env, params } = context;
 
@@ -30,11 +30,11 @@ export async function onRequestGet(context) {
     const userAgent = request.headers.get("User-Agent");
     const referer = request.headers.get('Referer');
 
-    const originurl = new URL(request.url);
-    const origin = `${originurl.protocol}//${originurl.hostname}` // 获取 "请求协议//请求主机名"
+    const originUrl = new URL(request.url);
+    const origin = `${originUrl.protocol}//${originUrl.hostname}` // 获取 "请求协议//请求主机名"
     const hostName = request.headers.get("Host");
 
-    let customOrigin = env.SHORT_DOMAINS ? `https://${env.SHORT_DOMAINS}` : origin;
+    const customOrigin = env.SHORT_DOMAINS ? `https://${env.SHORT_DOMAINS}` : origin;
 
     // 当前时间戳
     const formattedDate = new Date().toISOString();
@@ -49,13 +49,15 @@ export async function onRequestGet(context) {
         return createResponse(405, `此代理资源跳转 API 已禁止使用 HEAD 请求。`);
     }
 
-    // 如果请求的主机名不是原 API 的主机名
-    if (!env.SHORT_DOMAINS) {
+    if (!env.ALLOW_DOMAINS) {
         // 环境变量不存时跳过代码执行
-    } else if (hostName !== `${env.SHORT_DOMAINS}`) {
-        return new Response(null, {
-            status: 403
-        });
+    } else {
+        // 读取环境变量允许解析域名名单
+        const allowDomains = env.ALLOW_DOMAINS.split(',');
+        // 如果主机名不在允许列表内，则返回 403 响应
+        if (!allowDomains.includes(hostName)) {
+            return createResponse(403, `请求来源主机名未授权`);
+        }
     }
 
     const slug = decodeURIComponent(params.id); // 解码 slug 参数

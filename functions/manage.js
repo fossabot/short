@@ -8,6 +8,7 @@
 
 import { allowOrigin, createResponse, shortName, hashPassword, specialDomains } from './utils';
 
+// 处理短链管理的函数
 export async function onRequest(context) {
     const { request, env } = context;
 

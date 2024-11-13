@@ -4,3 +4,4 @@ Disallow: /cdn-cgi/
 Disallow: /asset/
 Disallow: /css/
 Disallow: /js/
+Disallow: /proxy/

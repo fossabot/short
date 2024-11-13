@@ -29,11 +29,11 @@ export async function onRequest(context) {
     const countryIP = request.headers.get("CF-IPCountry");
     const userAgent = request.headers.get("User-Agent");
 
-    const originurl = new URL(request.url);
-    const origin = `${originurl.protocol}//${originurl.hostname}` // 获取 "请求协议//请求主机名"
+    const originUrl = new URL(request.url);
+    const origin = `${originUrl.protocol}//${originUrl.hostname}` // 获取 "请求协议//请求主机名"
     const hostName = request.headers.get("Host");
 
-    let customOrigin = env.SHORT_DOMAINS ? `https://${env.SHORT_DOMAINS}` : origin;
+    const customOrigin = env.SHORT_DOMAINS ? `https://${env.SHORT_DOMAINS}` : origin;
 
     // 当前时间戳
     const formattedDate = new Date().toISOString();
@@ -49,12 +49,12 @@ export async function onRequest(context) {
 
     // 如果没有数据库变量
     if (!env.DB) {
-        return createResponse(500, `${shortName} API 运行正常，但尚未配置数据库。`);
+        return createResponse(500, `${shortName}API 运行正常，但尚未配置数据库。`);
     }
 
     // 如果不是 POST 请求
     if (request.method !== 'POST' && request.method !== 'HEAD') {
-        return createResponse(405, `${shortName} API 运行正常，请使用 POST 方法创建短链。`);
+        return createResponse(405, `${shortName}API 运行正常，请使用 POST 方法创建短链。`);
     }
 
     // 从 JSON 数据中解构出进入参数
