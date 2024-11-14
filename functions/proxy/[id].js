@@ -62,9 +62,9 @@ export async function onRequestGet(context) {
 
     const slug = decodeURIComponent(params.id); // 解码 slug 参数
 
-    // 查询 slug 对应的 URL
+    // 查询 slug 对应的 URL 及状态
     const urlQueryResult = await env.DB.prepare(`
-        SELECT url AS url 
+        SELECT url, status
         FROM links 
         WHERE slug = ?
     `).bind(slug).first();
@@ -73,16 +73,9 @@ export async function onRequestGet(context) {
     if (!urlQueryResult) {
         return Response.redirect(`${customOrigin}/${slug}`, 302);
     } else {
-        // 查询 slug 对应的状态
-        const statusQueryResult = await env.DB.prepare(`
-            SELECT status AS status 
-            FROM links 
-            WHERE slug = ?
-        `).bind(slug).first();
-
         let status = null;
-        if (statusQueryResult && statusQueryResult.status) {
-            status = statusQueryResult.status;
+        if (urlQueryResult && urlQueryResult.status) {
+            status = urlQueryResult.status;
         }
 
         // 如果状态不为 proxy，则进行 307 重定向到正常跳转
