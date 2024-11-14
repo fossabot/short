@@ -182,10 +182,10 @@ export async function onRequest(context) {
                 return createResponse(422, '请填写你要更新的目标 URL');
             }
 
-            const levelDomain = new URL(newUrl).hostname.split('.').pop();
+            /*const levelDomain = new URL(newUrl).hostname.split('.').pop();
             if (levelDomain === 'gov' || levelDomain === 'edu') {
                 return createResponse(403, '包含禁止更新的顶级域名');
-            }
+            }*/
 
             const urlHostnameParts = new URL(newUrl).hostname.split('.');
             let urlHostname = null;
