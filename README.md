@@ -1,4 +1,6 @@
 ## 二次修改
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmolikai-work%2Fshort.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmolikai-work%2Fshort?ref=badge_shield)
+
 > 本仓库分叉于 [x-dr/short](https://github.com/x-dr/short) 并且已经在源代码的基础上做了修改。
 
 > 源代码使用 MIT 许可证进行授权，本经过二次修改的代码同源代码的许可证，二次分发或者修改时请保留原作者和修改作者的版权信息。
@@ -217,3 +219,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"url":"https://example.org
 
 ## 贡献
 问题反馈或建议请提交 `issues`，也非常欢迎来提交 `pulls`，感谢！
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmolikai-work%2Fshort.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmolikai-work%2Fshort?ref=badge_large)
